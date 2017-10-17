@@ -1,0 +1,4 @@
+{
+    "dnsZone": "zone-name",
+    "secretToken": "such secret!"
+}

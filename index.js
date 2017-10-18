@@ -1,4 +1,4 @@
-
+const ipHelper = require('ip');
 const settings = require('./settings.json');
 
 /**
@@ -9,7 +9,8 @@ const settings = require('./settings.json');
  */
 exports.updateHost = function helloGET(req, res) {
     var token = req.query.token || req.body.token;
-    var ip = req.query.ip || req.ip;
+    var ipv4 = req.query.ipv4 || req.body.ipv4;
+    var ipv6 = req.query.ipv6 || req.body.ipv6;
     var host = req.query.host || req.body.host;
 
     if (token != settings.secretToken) {
@@ -22,16 +23,35 @@ exports.updateHost = function helloGET(req, res) {
         return;
     }
 
-    if (!ip) {
-        respondWithError(400, 'missing ip', 'Provide a valid IP address', res)
+    if (!ipv4 && !ipv6) {
+        var ipAddr = req.ip;
+        if (ipHelper.isV4Format(ipAddr)) {
+            ipv4 = ipAddr;
+        } else if (ipHelper.isV6Format(ipAddr)) {
+            ipv6 = ipAddr;
+        } else {
+            respondWithError(400, 'missing ip', 'Could not evaluate ip address. Please provide with request.', res);
+        }
+    }
+
+    if (ipv4 && !ipHelper.isV4Format(ipv4)) {
+        respondWithError(400, 'illegal IPv4', 'Could not parse IPv4 address: ' + ipv4, res);
         return;
     }
 
-    res.json({
+    if (ipv6 && !ipHelper.isV6Format(ipv6)) {
+        respondWithError(400, 'illegal IPv6', 'Could not parse IPv6 address: ' + ipv6, res);
+        return;
+    }
+
+    var data = {
         "zone": settings.dnsZone,
         "host": host,
-        "ip": ip
-    });
+        "ipv4": ipv4,
+        "ipv6": ipv6
+    };
+    console.log(data);
+    res.json(data);
 };
 
 function respondWithError(status, title, detail, res) {

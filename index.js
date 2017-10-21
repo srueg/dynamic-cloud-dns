@@ -1,6 +1,7 @@
-const ipHelper = require('ip');
-const DNS = require('@google-cloud/dns');
-const settings = require('./settings.json');
+/*jshint esversion: 6 */
+const ipHelper = require("ip");
+const DNS = require("@google-cloud/dns");
+const settings = require("./settings.json");
 
 /**
  * HTTP Cloud Function.
@@ -15,12 +16,12 @@ exports.updateHost = function helloGET(req, res) {
     var host = req.query.host || req.body.host;
 
     if (token != settings.secretToken) {
-        respondWithError(401, 'unauthorized', 'Login Required', res)
+        respondWithError(401, "unauthorized", "Login Required", res);
         return;
     }
 
     if (!host) {
-        respondWithError(400, 'missing host', 'Provide a valid host name', res)
+        respondWithError(400, "missing host", "Provide a valid host name", res);
         return;
     }
 
@@ -31,18 +32,18 @@ exports.updateHost = function helloGET(req, res) {
         } else if (ipHelper.isV6Format(ipAddr)) {
             ipv6 = ipAddr;
         } else {
-            respondWithError(400, 'missing ip', 'Could not evaluate ip address. Please provide with request.', res);
+            respondWithError(400, "missing ip", "Could not evaluate ip address. Please provide with request.", res);
             return;
         }
     }
 
     if (ipv4 && !ipHelper.isV4Format(ipv4)) {
-        respondWithError(400, 'illegal IPv4', 'Could not parse IPv4 address: ' + ipv4, res);
+        respondWithError(400, "illegal IPv4", "Could not parse IPv4 address: " + ipv4, res);
         return;
     }
 
     if (ipv6 && !ipHelper.isV6Format(ipv6)) {
-        respondWithError(400, 'illegal IPv6', 'Could not parse IPv6 address: ' + ipv6, res);
+        respondWithError(400, "illegal IPv6", "Could not parse IPv6 address: " + ipv6, res);
         return;
     }
 
@@ -61,7 +62,7 @@ exports.updateHost = function helloGET(req, res) {
 };
 
 function respondWithError(status, title, detail, res) {
-    let err = { 'code': status, 'title': title, 'detail': detail };
+    let err = { "code": status, "title": title, "detail": detail };
     console.error(err);
     res.status(status).json(err);
 }
@@ -75,15 +76,15 @@ function updateHosts(host, ipv4, ipv6) {
 
     var updates = [];
     if (ipv4) {
-        updates.push(updateRecord(zone, 'A', host, ipv4));
+        updates.push(updateRecord(zone, "A", host, ipv4));
     }
 
     if (ipv6) {
-        updates.push(updateRecord(zone, 'AAAA', host, ipv6));
+        updates.push(updateRecord(zone, "AAAA", host, ipv6));
     }
 
     return Promise.all(updates)
-        .then(values => Promise.resolve({ 'code': '200', 'values': { 'host': host, 'ipv4': ipv4, 'ipv6': ipv6 } }));
+        .then(() => Promise.resolve({ "code": "200", "values": { "host": host, "ipv4": ipv4, "ipv6": ipv6 } }));
 }
 
 function getOldRecord(zone, host, type) {
@@ -91,7 +92,7 @@ function getOldRecord(zone, host, type) {
         .then(data => {
             var oldRecord = data[0][0];
             if (!oldRecord) {
-                throw { 'code': 400, 'title': "illegal host", 'message': "Host '" + host + "' not found." };
+                throw { "code": 400, "title": "illegal host", "message": "Host '" + host + "' not found." };
             }
             return Promise.resolve(oldRecord);
         });

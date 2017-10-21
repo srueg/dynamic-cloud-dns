@@ -1,4 +1,5 @@
 const ipHelper = require('ip');
+const DNS = require('@google-cloud/dns');
 const settings = require('./settings.json');
 
 /**
@@ -31,6 +32,7 @@ exports.updateHost = function helloGET(req, res) {
             ipv6 = ipAddr;
         } else {
             respondWithError(400, 'missing ip', 'Could not evaluate ip address. Please provide with request.', res);
+            return;
         }
     }
 
@@ -44,18 +46,66 @@ exports.updateHost = function helloGET(req, res) {
         return;
     }
 
-    var data = {
+    console.log({
         "zone": settings.dnsZone,
         "host": host,
         "ipv4": ipv4,
         "ipv6": ipv6
-    };
-    console.log(data);
-    res.json(data);
+    });
+
+    updateHosts(host, ipv4, ipv6)
+        .then(data => {
+            res.json(data);
+        })
+        .catch(err => respondWithError(err.code || 500, err.title || "API error", err.message, res));
 };
 
 function respondWithError(status, title, detail, res) {
-    let err = { 'errors': [{ 'status': status, 'title': title, "detail": detail }] };
+    let err = { 'code': status, 'title': title, 'detail': detail };
     console.error(err);
     res.status(status).json(err);
+}
+
+function updateHosts(host, ipv4, ipv6) {
+    var dnsClient = DNS({
+        keyFilename: '/Users/srueg/Development/gcloud/Labor-45e52fd3edd6.json',
+        projectId: settings.projectId
+    });
+
+    var zone = dnsClient.zone(settings.dnsZone);
+
+    var updates = [];
+    if (ipv4) {
+        updates.push(updateRecord(zone, 'A', host, ipv4));
+    }
+
+    if (ipv6) {
+        updates.push(updateRecord(zone, 'AAAA', host, ipv6));
+    }
+
+    return Promise.all(updates)
+        .then(values => Promise.resolve({ 'code': '200', 'values': { 'host': host, 'ipv4': ipv4, 'ipv6': ipv6 } }));
+}
+
+function getOldRecord(zone, host, type) {
+    return zone.getRecords({ name: host, type: type })
+        .then(data => {
+            var oldRecord = data[0][0];
+            if (!oldRecord) {
+                throw { 'code': 400, 'title': "illegal host", 'message': "Host '" + host + "' not found." };
+            }
+            return Promise.resolve(oldRecord);
+        });
+}
+
+function updateRecord(zone, type, host, data) {
+    return getOldRecord(zone, host, type)
+        .then(oldRecord => zone.createChange({
+            add: zone.record(type, {
+                name: host,
+                ttl: 10,
+                data: data
+            }),
+            delete: oldRecord
+        }));
 }

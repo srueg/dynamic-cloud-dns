@@ -1,4 +1,5 @@
 {
     "dnsZone": "zone-name",
-    "secretToken": "such secret!"
+    "secretToken": "such secret!",
+    "ttl": "10"
 }

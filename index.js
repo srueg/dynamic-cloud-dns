@@ -109,16 +109,16 @@ function updateHosts(host, ipv4, ipv6) {
     });
 }
 
-function getOldRecords(zone, host) {
+function getOldRecords(zone, host, ipv4, ipv6) {
     return zone
-        .getRecords({ name: host, filterByTypes_: { A: true, AAAA: true } })
+        .getRecords({ name: host, filterByTypes_: { A: ipv4, AAAA: ipv6 } })
         .then(data => {
             var oldRecord = data[0];
             if (oldRecord.length < 1) {
                 throw {
                     code: 400,
                     title: 'illegal host',
-                    message: 'Host \'' + host + '\' not found.'
+                    message: 'Host "' + host + '" not found.'
                 };
             }
             return oldRecord;
@@ -126,7 +126,12 @@ function getOldRecords(zone, host) {
 }
 
 function updateRecords(zone, host, ipv4, ipv6) {
-    return getOldRecords(zone, host).then(oldRecords => {
+    return getOldRecords(
+        zone,
+        host,
+        typeof ipv4 != 'undefined',
+        typeof ipv6 != 'undefined'
+    ).then(oldRecords => {
         let newRecords = [];
         if (ipv4) {
             newRecords.push(

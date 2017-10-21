@@ -55,7 +55,7 @@ exports.updateHost = function helloGET(req, res) {
 
     updateHosts(host, ipv4, ipv6)
         .then(data => {
-            res.json(data);
+            res.status(200).json(data);
         })
         .catch(err => respondWithError(err.code || 500, err.title || "API error", err.message, res));
 };

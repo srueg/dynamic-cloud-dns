@@ -68,7 +68,6 @@ function respondWithError(status, title, detail, res) {
 
 function updateHosts(host, ipv4, ipv6) {
     var dnsClient = DNS({
-        keyFilename: '/Users/srueg/Development/gcloud/Labor-45e52fd3edd6.json',
         projectId: settings.projectId
     });
 

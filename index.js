@@ -95,9 +95,7 @@ function respondWithError(status, title, detail, res) {
 }
 
 function updateHosts(host, ipv4, ipv6) {
-    var dnsClient = DNS({
-        projectId: settings.projectId
-    });
+    var dnsClient = DNS();
 
     var zone = dnsClient.zone(settings.dnsZone);
 

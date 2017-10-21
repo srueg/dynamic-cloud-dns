@@ -84,7 +84,14 @@ function updateHosts(host, ipv4, ipv6) {
     }
 
     return Promise.all(updates)
-        .then(() => Promise.resolve({ "code": "200", "values": { "host": host, "ipv4": ipv4, "ipv6": ipv6 } }));
+        .then(() => Promise.resolve({
+            "code": "200",
+            "values": {
+                "host": host,
+                "ipv4": ipv4,
+                "ipv6": ipv6
+            }
+        }));
 }
 
 function getOldRecord(zone, host, type) {

@@ -1,6 +1,6 @@
 # Dynamic Cloud DNS
 
-Dynamic DNS functionality backed by Cloud DNS hosted on Google Cloud Functions.
+Dynamic DNS functionality backed by Google Cloud DNS hosted on Google Cloud Functions.
 The deployed function can be called with the host, IPv4 and IPv6 address to update. The data can be either URL query parameters or a JSON body.
 ```
 curl https://us-central1-<project-name>.cloudfunctions.net/updateHost?token=<secretToken>&host=test.example.com&ipv4=192.168.1.1&ipv6=::1

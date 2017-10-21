@@ -26,6 +26,10 @@ exports.updateHost = function helloGET(req, res) {
         return;
     }
 
+    if (!host.endsWith('.')) {
+        host += '.';
+    }
+
     if (!ipv4 && !ipv6) {
         var ipAddr = req.ip;
         if (ipHelper.isV4Format(ipAddr)) {

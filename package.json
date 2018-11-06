@@ -13,7 +13,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node_modules/@google-cloud/functions-emulator/bin/functions; node_modules/@google-cloud/functions-emulator/bin/functions start && node_modules/@google-cloud/functions-emulator/bin/functions deploy updateHost --trigger-http && node_modules/@google-cloud/functions-emulator/bin/functions inspect updateHost",
-    "stop": "node_modules/@google-cloud/functions-emulator/bin/functions stop"
+    "stop": "node_modules/@google-cloud/functions-emulator/bin/functions stop",
+    "deploy": "gcloud functions deploy updateHost --source . --runtime nodejs8 --trigger-http"
   },
   "author": "Simon Rüegg <simon@rueggs.ch>",
   "license": "MIT",

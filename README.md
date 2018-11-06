@@ -28,7 +28,7 @@ Settings are stored in `settings.json`
 To be able to authenticate against the Google Cloud DNS API, a environemnt variable `GOOGLE_APPLICATION_CREDENTIALS` must be set, which point to a valid [credentials.json](https://developers.google.com/identity/protocols/application-default-credentials). The Google Cloud project name is read from the env var `GCLOUD_PROJECT`.
 
 ## Local Development
-* `nvm use 6.11.1`
+* `nvm use`
 * `npm install -g @google-cloud/functions-emulator`
 * `functions start`
 * For debugging `functions inspect updateHost`

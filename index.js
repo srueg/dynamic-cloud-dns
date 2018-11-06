@@ -1,9 +1,10 @@
 /*jshint esversion: 6 */
 
 const ipHelper = require('ip');
-const DNS = require('@google-cloud/dns');
+const {DNS} = require('@google-cloud/dns');
 const settings = require('./settings.json');
 
+const dns = new DNS();
 /**
  * HTTP Cloud Function.
  *
@@ -95,7 +96,7 @@ function respondWithError(status, title, detail, res) {
 }
 
 function updateHosts(host, ipv4, ipv6) {
-    var dnsClient = DNS();
+    var dnsClient = dns;
 
     var zone = dnsClient.zone(settings.dnsZone);
 

@@ -35,7 +35,7 @@ To be able to authenticate against the Google Cloud DNS API, a environemnt varia
 
 ## Deploy to Google Cloud Functions
 * Setup [Google Cloud Functions](https://cloud.google.com/functions/docs/quickstart)
-* `gcloud beta functions deploy updateHost --stage-bucket <bucket-name> --trigger-http`
+* `gcloud beta functions deploy updateHost --stage-bucket <bucket-name> --runtime nodejs8 --trigger-http`
 
 ## License ##
 

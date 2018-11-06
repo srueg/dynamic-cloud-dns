@@ -7,9 +7,13 @@
     "@google-cloud/dns": "^0.8.0",
     "ip": "^1.1.5"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@google-cloud/functions-emulator": "^1.0.0-beta.5"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node_modules/@google-cloud/functions-emulator/bin/functions; node_modules/@google-cloud/functions-emulator/bin/functions start && node_modules/@google-cloud/functions-emulator/bin/functions deploy updateHost --trigger-http && node_modules/@google-cloud/functions-emulator/bin/functions inspect updateHost",
+    "stop": "node_modules/@google-cloud/functions-emulator/bin/functions stop"
   },
   "author": "Simon Rüegg <simon@rueggs.ch>",
   "license": "MIT",

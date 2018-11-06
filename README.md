@@ -29,9 +29,9 @@ To be able to authenticate against the Google Cloud DNS API, a environemnt varia
 
 ## Local Development
 * `nvm use`
-* `npm install -g @google-cloud/functions-emulator`
-* `functions start`
-* For debugging `functions inspect updateHost`
+* `npm install`
+* To start the emulator and deploy the function: `npm start`
+* To stop the emulator `npm stop`
 
 ## Deploy to Google Cloud Functions
 * Setup [Google Cloud Functions](https://cloud.google.com/functions/docs/quickstart)

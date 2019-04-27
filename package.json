@@ -4,7 +4,7 @@
   "description": "Dynamic DNS functionality backed by cloud DNS.",
   "main": "index.js",
   "dependencies": {
-    "@google-cloud/dns": "^0.8.0",
+    "@google-cloud/dns": "^0.9.0",
     "ip": "^1.1.5"
   },
   "devDependencies": {

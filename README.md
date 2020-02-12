@@ -38,6 +38,10 @@ To be able to authenticate against the Google Cloud DNS API, a environemnt varia
 * [Install](https://cloud.google.com/sdk/install) the `gcloud` CLI tool
 * `npm run deploy`
 
+## Client
+
+If you want to call this automatically under Linux, you can try [Dynamic Cloud DNS Client](https://github.com/crazystick/dynamic-cloud-dns-client)
+
 ## License ##
 
 Copyright (c) 2017, Simon Rüegg. All rights reserved.

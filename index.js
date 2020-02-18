@@ -16,6 +16,7 @@ exports.updateHost = function helloGET(req, res) {
     var ipv4 = req.query.ipv4 || req.body.ipv4;
     var ipv6 = req.query.ipv6 || req.body.ipv6;
     var host = req.query.host || req.body.host;
+    var zone = req.query.zone || req.body.zone || settings.dnsZone;
 
     if (token != settings.secretToken) {
         respondWithError(401, 'unauthorized', 'Login Required', res);
@@ -69,13 +70,13 @@ exports.updateHost = function helloGET(req, res) {
     }
 
     console.log({
-        zone: settings.dnsZone,
+        zone: zone,
         host: host,
         ipv4: ipv4,
         ipv6: ipv6
     });
 
-    updateHosts(host, ipv4, ipv6)
+    updateHosts(zone, host, ipv4, ipv6)
         .then(data => {
             res.status(200).json(data);
         })
@@ -95,12 +96,12 @@ function respondWithError(status, title, detail, res) {
     res.status(status).json(err);
 }
 
-function updateHosts(host, ipv4, ipv6) {
+function updateHosts(zone, host, ipv4, ipv6) {
     var dnsClient = dns;
 
-    var zone = dnsClient.zone(settings.dnsZone);
+    var dnsZone = dnsClient.zone(zone);
 
-    return updateRecords(zone, host, ipv4, ipv6).then(() => {
+    return updateRecords(dnsZone, host, ipv4, ipv6).then(() => {
         return {
             code: '200',
             values: {

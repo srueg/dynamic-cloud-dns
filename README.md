@@ -17,6 +17,7 @@ curl https://us-central1-<project-name>.cloudfunctions.net/updateHost \
 If neither an IPv4 nor an IPv6 address is provided, the source address of the request is used.
 
 ## Configuration
+
 Settings are stored in `settings.json`
 
 | Config     | Description
@@ -25,27 +26,33 @@ Settings are stored in `settings.json`
 |`secretToken` | A secret token, used to authenticate users.
 |`ttl`         | Time to live for records in seconds.
 
-To be able to authenticate against the Google Cloud DNS API, a environemnt variable `GOOGLE_APPLICATION_CREDENTIALS` must be set, which point to a valid [credentials.json](https://developers.google.com/identity/protocols/application-default-credentials). The Google Cloud project name is read from the env var `GCLOUD_PROJECT`.
+To be able to authenticate against the Google Cloud DNS API, an environment variable `GOOGLE_APPLICATION_CREDENTIALS` must be set, which points to a valid [credentials.json](https://cloud.google.com/docs/authentication/production). The Google Cloud project name is read from the env var `GCLOUD_PROJECT`.
 
 ## Local Development
+
 * `nvm use`
 * `npm install`
-* To start the emulator and deploy the function: `npm start`
-* To stop the emulator `npm stop`
+* Setup your Gcloud credentials: `export GOOGLE_APPLICATION_CREDENTIALS=/Path/to/your/credentials.json`
+* To start the emulator in the background: `npm start &`
+* Send requests to the emulator: `curl localhost:8080?token=<secretToken>&host=test.example.com&ipv4=192.168.1.1&ipv6=::1`
+
+See [docs](https://github.com/GoogleCloudPlatform/functions-framework-nodejs) for further info.
 
 ## Deploy to Google Cloud Functions
+
 * Setup [Google Cloud Functions](https://cloud.google.com/functions/docs/quickstart)
 * [Install](https://cloud.google.com/sdk/install) the `gcloud` CLI tool
+* Authenticate: `gcloud auth login`
 * `npm run deploy`
 
 ## Client
 
 If you want to call this automatically under Linux, you can try [Dynamic Cloud DNS Client](https://github.com/crazystick/dynamic-cloud-dns-client)
 
-## License ##
+## License
 
-Copyright (c) 2017, Simon Rüegg. All rights reserved.
+Copyright (c) 2020, Simon Rüegg. All rights reserved.
 
-Smith is licensed under the MIT License.
+Dynamic Cloud DNS is licensed under the MIT License.
 
 See [LICENSE](LICENSE) for more details.

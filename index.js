@@ -11,7 +11,7 @@ const dns = new DNS();
  * @param {Object} req Cloud Function request context.
  * @param {Object} res Cloud Function response context.
  */
-exports.updateHost = function helloGET(req, res) {
+exports.updateHost = function(req, res) {
     var token = req.query.token || req.body.token;
     var ipv4 = req.query.ipv4 || req.body.ipv4;
     var ipv6 = req.query.ipv6 || req.body.ipv6;
@@ -101,15 +101,16 @@ function updateHosts(zone, host, ipv4, ipv6) {
 
     var dnsZone = dnsClient.zone(zone);
 
-    return updateRecords(dnsZone, host, ipv4, ipv6).then(() => {
-        return {
-            code: '200',
-            values: {
-                host: host,
-                ipv4: ipv4,
-                ipv6: ipv6
-            }
-        };
+    return updateRecords(dnsZone, host, ipv4, ipv6)
+        .then(() => {
+            return {
+                code: '200',
+                values: {
+                    host: host,
+                    ipv4: ipv4,
+                    ipv6: ipv6
+                }
+            };
     });
 }
 
@@ -155,7 +156,7 @@ function updateRecords(zone, host, ipv4, ipv6) {
                 })
             );
         }
-        zone.createChange({
+        return zone.createChange({
             add: newRecords,
             delete: oldRecords
         });

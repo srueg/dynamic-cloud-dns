@@ -28,6 +28,11 @@ exports.updateHost = function(req, res) {
         return;
     }
 
+    if (!settings.allowedHosts.includes('*') && !settings.allowedHosts.includes(host)) {
+        respondWithError(403, 'illegal host', 'Host "' + host + '" is not allowed', res);
+        return;
+    }
+
     if (!host.endsWith('.')) {
         host += '.';
     }

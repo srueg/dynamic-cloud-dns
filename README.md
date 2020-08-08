@@ -24,6 +24,7 @@ Settings are stored in `settings.json`
 |------------|---------------
 |`dnsZone`     | The Google Cloud DNS Zone name in which the records reside.
 |`secretToken` | A secret token, used to authenticate users.
+|`allowedHosts`| A list of hosts that callers are allowed to update. May include `"*"` to allow all hosts.
 |`ttl`         | Time to live for records in seconds.
 
 To be able to authenticate against the Google Cloud DNS API, an environment variable `GOOGLE_APPLICATION_CREDENTIALS` must be set, which points to a valid [credentials.json](https://cloud.google.com/docs/authentication/production). The Google Cloud project name is read from the env var `GCLOUD_PROJECT`.
